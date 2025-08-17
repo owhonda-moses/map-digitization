@@ -38,21 +38,22 @@ The project is designed to be run in a sequential workflow. All scripts should b
 
 
 ```mermaid
-%%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
-flowchart LR
-    A["Start"] --> B["Run src/draft_mask.py to create draft_mask.png (optional)"]
-    B --> C{"Refine mask to create ground truth masks (manual)"}
-    C --> D["Run src/create_ocr_dataset.py"]
-    D --> E{"Create & populate metadata.csv with text labels (manual)"}
-    E --> F["Run src/train_segmentation.py"]
-    E --> G["Run src/train_ocr.py"]
+%%{init: {"themeVariables": {"fontSize": "10px", "fontFamily": "Arial", "padding": 4}, "flowchart": {"defaultRenderer": "elk"}} }%%
+flowchart TD
+    classDef compactStyle font-size:10px,padding:4px;
+    A["Start"]:::compactStyle --> B["Run src/draft_mask.py (optional)"]:::compactStyle
+    B --> C{"Refine mask for ground truth (manual)"}:::compactStyle
+    C --> D["Run src/create_ocr_dataset.py"]:::compactStyle
+    D --> E{"Edit metadata.csv with text labels (manual)"}:::compactStyle
+    E --> F["Run src/train_segmentation.py"]:::compactStyle
+    E --> G["Run src/train_ocr.py"]:::compactStyle
     subgraph Training
-        F --> H((Segmentation Model))
-        G --> I((OCR Model))
+        F --> H((Segmentation Model)):::compactStyle
+        G --> I((OCR Model)):::compactStyle
     end
-    H & I --> J["Run src/process_map.py"]
-    J --> K["Run src/verify_output.py"]
-    K --> L["View final outputs"]
+    H & I --> J["Run src/process_map.py"]:::compactStyle
+    J --> K["Run src/verify_output.py"]:::compactStyle
+    K --> L["View final outputs"]:::compactStyle
 ```
 
 ### Detailed Steps
