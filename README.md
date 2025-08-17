@@ -93,5 +93,18 @@ All executable scripts are located in the `src/` directory.
 * `process_map.py`: The main inference script that runs the full pipeline on a source image to generate the final GeoPackage.
 * `verify_output.py`: A utility to programmatically verify the final geospatial output by creating an annotated image.
   
-    
+
+### Limitations
+
+* **Single-Source Training Data**: This is the primary limitation. Both the segmentation and OCR models were trained on data derived from a single map. This restricts their ability to generalize to new maps with different wear, tear, or handwriting.
+* **Fixed Georeferencing**: The Ground Control Points (GCPs) are hardcoded in `src/process_map.py` for the specific map sheet `NZ 3616`. The system cannot automatically georeference a different map.
+* **Static Post-processing**: The contour merging logic in `process_map.py` uses a fixed kernel size, which is tuned for the current image. It may perform sub-optimally on text with significantly different character spacing.
+
+### Future Work
+
+* **Expand the Dataset**: The most impactful improvement would be to acquire and annotate more maps. Training on a larger and more diverse dataset is the only way to significantly improve the generalization and accuracy of both the segmentation and OCR models.
+* **Hyperparameter Tuning**: Conduct a systematic search for optimal training settings (e.g., learning rate, class weights) using a tool like Optuna to maximize model performance.
+* **Automated Georeferencing**: Implement a feature to automatically detect grid lines and corner coordinates from the map image itself, allowing the system to process any map sheet without hardcoded values.
+* **Quantitative Evaluation**: Establish a dedicated test set of annotated maps and implement a formal evaluation pipeline that calculates key metrics (e.g., Intersection over Union for segmentation, Character Error Rate for OCR) to objectively benchmark model performance.
+* **Deployment**: Wrap the final inference pipeline in a web API (using a framework like FastAPI or Flask) to create a user-friendly service for digitizing new maps.
     
