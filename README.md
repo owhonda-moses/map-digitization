@@ -1,4 +1,4 @@
-# Map Digitization Project
+# Map Digitization
 
 This project uses a deep learning pipeline to automatically digitize handwritten annotations from scanned map images. It performs two main tasks:
 1.  **Image Segmentation**: Identifies and extracts pixel masks for handwritten boundaries and text using a fine-tuned U-Net model.
@@ -22,10 +22,13 @@ graph TD
     B --> B2(ocr_data)
     
     A --> C(src)
-    C --> C1[train_unet.py]
-    C --> C2[train_ocr.py]
-    C --> C3[process_map.py]
-    C --> C4[...]
+    C --> C1[__init__.py]
+    C --> C2[draft_mask.py]
+    C --> C3[ocr_dataset.py]
+    C --> C4[process_map.py]
+    C --> C5[train_ocr.py]
+    C --> C6[train_unet.py]
+    C --> C7[verify_cv.py]
 
     A --> D(outputs)
     D --> D1(models)
