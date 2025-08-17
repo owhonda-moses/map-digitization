@@ -38,7 +38,8 @@ The project is designed to be run in a sequential workflow. All scripts should b
 
 
 ```mermaid
-flowchart TD
+%%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
+flowchart LR
     A["Start"] --> B["Run src/draft_mask.py to create draft_mask.png (optional)"]
     B --> C{"Refine mask to create ground truth masks (manual)"}
     C --> D["Run src/create_ocr_dataset.py"]
@@ -51,7 +52,7 @@ flowchart TD
     end
     H & I --> J["Run src/process_map.py"]
     J --> K["Run src/verify_output.py"]
-    K --> L["End: View Final Outputs"]
+    K --> L["View final outputs"]
 ```
 
 ### Detailed Steps
