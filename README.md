@@ -39,19 +39,19 @@ The project is designed to be run in a sequential workflow. All scripts should b
 
 ```mermaid
 flowchart TD
-    A[Start] --> B[1. Run src/draft_mask.py to create draft_mask.png (optional)];
-    B --> C{2. Refine mask to create ground truth masks (manual)};
-    C --> D[3. Run src/create_ocr_dataset.py];
-    D --> E{4. Create & populate metadata.csv with text labels (manual)};
-    E --> F[5. Run src/train_segmentation.py];
-    E --> G[6. Run src/train_ocr.py];
+    A["Start"] --> B["1. Run src/draft_mask.py to create draft_mask.png (optional)"];
+    B --> C{"2. Refine mask to create ground truth masks (manual)"};
+    C --> D["3. Run src/create_ocr_dataset.py"];
+    D --> E{"4. Create & populate metadata.csv with text labels (manual)"};
+    E --> F["5. Run src/train_segmentation.py"];
+    E --> G["6. Run src/train_ocr.py"];
     subgraph Training
         F --> H((Segmentation Model));
         G --> I((OCR Model));
     end
-    H & I --> J[7. Run src/process_map.py];
-    J --> K[8. Run src/verify_output.py];
-    K --> L[End: View Final Outputs];
+    H & I --> J["7. Run src/process_map.py"];
+    J --> K["8. Run src/verify_output.py"];
+    K --> L["End: View Final Outputs"];
 ```
 
 ### Detailed Steps
