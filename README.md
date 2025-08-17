@@ -45,7 +45,7 @@ graph TD
         D1 --> M1[tuned_model.pth]
         D1 --> M2[trocr-tuned-ocr/]
     end
-    ```
+```
     
 ## Setup and Installation
 
