@@ -206,5 +206,22 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 
-pat.env
+
 setup.md
+pat.env
+/map-cv/
+/miniconda/
+
+# Python cache
+__pycache__/
+*.pyc
+.venv
+
+# Data and Outputs
+/outputs/models/tuned_model.pth
+/outputs/models/trocr-tuned-ocr/model.safetensors
+/outputs/models/trocr-tuned-ocr/checkpoint-320
+
+# OS / Editor specific
+.DS_Store
+.vscode/

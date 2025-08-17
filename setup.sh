@@ -38,7 +38,6 @@ git fetch origin main --depth=1 2>/dev/null || true
 git checkout main 2>/dev/null || git checkout -b main
 
 
-
 echo "Installing Tesseract (OCR) and GDAL"
 apt-get update -y >/dev/null 2>&1
 apt-get install -y --no-install-recommends \
@@ -48,11 +47,51 @@ apt-get install -y --no-install-recommends \
 echo "System dependencies installed."
 
 
-echo "Setting up Python with Poetry and PyTorch"
-pip install --upgrade pip poetry >/dev/null 2>&1
-poetry env use python3.11 >/dev/null 2>&1
-poetry install --no-interaction --no-ansi >/dev/null 2>&1
-echo "Python env ready: $(poetry run python -V)"
+# echo "Setting up Python with Poetry"
+# curl -sSL https://install.python-poetry.org | python3.11 -
+# export PATH="/root/.local/bin:$PATH"
+# echo "Poetry installed."
 
+# echo "Setting up environment and packages"
+# poetry env use python3.11
+# poetry lock
+# poetry install --no-interaction --no-ansi >/dev/null 2>&1
+
+# echo "Installing PyTorch"
+# poetry run pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+# echo "PyTorch installed."
+# poetry run python -c "import torch; print(f'Python env ready: {torch.__version__}, CUDA: {torch.cuda.is_available()}')"
+
+
+CONDA_INSTALL_PATH="$HOME/miniconda"
+CONDA_ENV_NAME="map-cv"
+
+
+if [ -d "$CONDA_INSTALL_PATH" ]; then
+    echo "Miniconda is installed."
+else
+    echo "Installing Miniconda"
+    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
+    bash miniconda.sh -b -p "$CONDA_INSTALL_PATH"
+    rm miniconda.sh
+    echo "Miniconda installed."
+fi
+
+source "$CONDA_INSTALL_PATH/etc/profile.d/conda.sh"
+conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main
+conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
+
+echo "Installing Mamba"
+conda install -n base -c conda-forge mamba -y
+
+if conda env list | grep -q "^${CONDA_ENV_NAME}\s"; then
+  echo "Environment '${CONDA_ENV_NAME}' exists."
+else
+  echo "Creating environment '${CONDA_ENV_NAME}'"
+  yes | mamba env create -f environment.yml
+  echo "Environment created."
+fi
+
+echo 'export PATH="$HOME/miniconda/bin:$PATH"' >> ~/.bashrc
 
 echo "Setup complete"
