@@ -39,16 +39,19 @@ The project is designed to be run in a sequential workflow. All scripts should b
 
 ```mermaid
 flowchart TD
-    A["Start"]
-    --> B["1. Run src/draft_mask.py (Optional)"]
-    --> C{"2. Refine Draft to Create Ground Truth Masks (Manual)"}
-    --> D["3. Run src/ocr_dataset.py"]
-    --> E{"4. Manually Populate metadata.csv with Text Labels"}
-    --> F["5. Run src/train_unet.py"]
-    --> G["6. Run src/train_ocr.py"]
-    --> H["7. Run src/process_map.py"]
-    --> I["8. Run src/verify_cv.py"]
-    --> J["End: View Final Outputs"]
+    A["Start"] --> B["Run src/draft_mask.py to create draft_mask.png (optional)"]
+    B --> C{"Refine mask to create ground truth masks (manual)"}
+    C --> D["Run src/create_ocr_dataset.py"]
+    D --> E{"Create & populate metadata.csv with text labels (manual)"}
+    E --> F["Run src/train_segmentation.py"]
+    E --> G["Run src/train_ocr.py"]
+    subgraph Training
+        F --> H((Segmentation Model))
+        G --> I((OCR Model))
+    end
+    H & I --> J["Run src/process_map.py"]
+    J --> K["Run src/verify_output.py"]
+    K --> L["End: View Final Outputs"]
 ```
 
 ### Detailed Steps
@@ -86,7 +89,7 @@ All executable scripts are located in the `src/` directory.
 * `train_segmentation.py`: Trains the fine-tuned U-Net segmentation model.
 * `train_ocr.py`: Fine-tunes the TrOCR model for handwriting recognition.
 * `process_map.py`: The main inference script that runs the full pipeline on a source image to generate the final GeoPackage.
-* `verify_cv.py`: A utility to programmatically verify the final geospatial output by creating an annotated image.
+* `verify_output.py`: A utility to programmatically verify the final geospatial output by creating an annotated image.
   
     
     
