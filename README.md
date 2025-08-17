@@ -6,50 +6,10 @@ This project uses a deep learning pipeline to automatically digitize handwritten
 
 The final output is a GeoPackage file containing georeferenced polygons of the detected features, with the recognized text included as metadata.
 
-## Repository Structure
-
-The repository is organized to separate source code, data, and generated outputs.
-
-```mermaid
-graph TD
-    A[maps-cv] --> R1[environment.yml]
-    A --> R2[setup.sh]
-    A --> R3[README.md]
-    A --> R4[.gitignore]
-    
-    A --> B(data)
-    B --> B1(input)
-    B --> B2(ocr_data)
-    
-    A --> C(src)
-    C --> C1[__init__.py]
-    C --> C2[draft_mask.py]
-    C --> C3[ocr_dataset.py]
-    C --> C4[process_map.py]
-    C --> C5[train_ocr.py]
-    C --> C6[train_unet.py]
-    C --> C7[verify_cv.py]
-
-    A --> D(outputs)
-    D --> D1(models)
-    D --> D2(data)
-    D --> D3(images)
-    
-    subgraph Input Data
-        B1 --> F1[stockton_1.png]
-        B1 --> F2[boundaries_mask.png]
-        B1 --> F3[text_mask.png]
-    end
-
-    subgraph Generated Models
-        D1 --> M1[tuned_model.pth]
-        D1 --> M2[trocr-tuned-ocr/]
-    end
-```
     
 ## Setup and Installation
 
-This project uses Conda for robust environment management and is designed to be run in an ephemeral cloud environment.
+This project uses Conda for environment management and is designed to be run in an ephemeral cloud environment.
 
 ### Target Environment
 This setup was developed and tested on a **Paperspace Gradient Notebook**. The `setup.sh` script and environment configuration are tailored for this platform. While it may work in other Debian-based Linux environments with a suitable GPU, adjustments might be necessary.
@@ -69,26 +29,30 @@ This setup was developed and tested on a **Paperspace Gradient Notebook**. The `
 
 3.  **Activate the Environment**: After setup is complete, you must activate the Conda environment in your terminal.
     ```bash
-    conda activate map-digitization
+    conda init
+    conda activate map-cv
     ```
     
 ## Usage Workflow
 The project is designed to be run in a sequential workflow. All scripts should be run from the root of the repository after activating the Conda environment.
 
 
+```mermaid
 flowchart TD
-    A[Start] --> B{1. Prepare Ground Truth Masks};
-    B --> C[2. Run `src/ocr_dataset.py`];
-    C --> D{3. Create `metadata.csv`};
-    D --> E[4. Run `src/train_unet.py`];
-    D --> F[5. Run `src/train_ocr.py`];
+    A[Start] --> B[1. Run `src/draft_mask.py` (pptional)];
+    B --> C{2. Refine draft_mask to create ground truth masks (manual)};
+    C --> D[3. Run `src/create_ocr_dataset.py`];
+    D --> E{4. Create `metadata.csv` and populate with text labels (manual)};
+    E --> F[5. Run `src/train_segmentation.py`];
+    E --> G[6. Run `src/train_ocr.py`];
     subgraph Training
-        E --> G((Segmentation Model));
-        F --> H((OCR Model));
+        F --> H((Segmentation Model));
+        G --> I((OCR Model));
     end
-    G & H --> I[6. Run `src/process_map.py`];
-    I --> J[7. Run `src/verify_cv.py`];
-    J --> K[End: View Final Outputs];
+    H & I --> J[7. Run `src/process_map.py`];
+    J --> K[8. Run `src/verify_cv.py`];
+    K --> L[End: View Final Outputs];
+```
     
     
 ## Scripts Description
