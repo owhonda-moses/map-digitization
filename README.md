@@ -39,19 +39,16 @@ The project is designed to be run in a sequential workflow. All scripts should b
 
 ```mermaid
 flowchart TD
-    A["Start"] --> B["1. Run src/draft_mask.py to create draft_mask.png (optional)"];
-    B --> C{"2. Refine mask to create ground truth masks (manual)"};
-    C --> D["3. Run src/create_ocr_dataset.py"];
-    D --> E{"4. Create & populate metadata.csv with text labels (manual)"};
-    E --> F["5. Run src/train_segmentation.py"];
-    E --> G["6. Run src/train_ocr.py"];
-    subgraph Training
-        F --> H((Segmentation Model));
-        G --> I((OCR Model));
-    end
-    H & I --> J["7. Run src/process_map.py"];
-    J --> K["8. Run src/verify_output.py"];
-    K --> L["End: View Final Outputs"];
+    A["Start"]
+    --> B["1. Run src/draft_mask.py (Optional)"]
+    --> C{"2. Refine Draft to Create Ground Truth Masks (Manual)"}
+    --> D["3. Run src/ocr_dataset.py"]
+    --> E{"4. Manually Populate metadata.csv with Text Labels"}
+    --> F["5. Run src/train_unet.py"]
+    --> G["6. Run src/train_ocr.py"]
+    --> H["7. Run src/process_map.py"]
+    --> I["8. Run src/verify_cv.py"]
+    --> J["End: View Final Outputs"]
 ```
 
 ### Detailed Steps
@@ -64,7 +61,7 @@ flowchart TD
     * Manually correct the draft by painting with pure white for features and pure black for background.
     * Export two separate files to `data/input/`: `boundaries_mask.png` and `text_mask.png`.
 
-3.  **Run `src/ocr_dataset.py`**: This script uses your `text_mask.png` to generate image snippets and saves them in `data/ocr_data/images/`.
+3.  **Run `src/create_ocr_dataset.py`**: This script uses your `text_mask.png` to generate image snippets and saves them in `data/ocr_data/images/`.
 
 4.  **Populate `metadata.csv` (Manual)**: Create a text file at `data/ocr_data/metadata.csv`. It must contain two columns, `file_name` and `text`, with the correct label for each image snippet generated in the previous step.
 
@@ -75,9 +72,9 @@ flowchart TD
     images/image_1.png,"96/0999"
     images/image_2.png,"SK/5581P"
     ```
-5.  **Train Models**: Run `src/train_unet.py` and `src/train_ocr.py`.
+5.  **Train Models**: Run `src/train_segmentation.py` and `src/train_ocr.py`.
 6.  **Run Inference**: Run `src/process_map.py` to generate the final `GeoPackage`.
-7.  **Verify Output**: Run `src/verify_cv.py` to create a final annotated image.
+7.  **Verify Output**: Run `src/verify_output.py` to create a final annotated image.
 
     
 ## Scripts Description
