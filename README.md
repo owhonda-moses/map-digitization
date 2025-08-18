@@ -38,22 +38,22 @@ The project is designed to be run in a sequential workflow. All scripts should b
 
 
 ```mermaid
-%%{init: {"themeVariables": {"fontSize": "10px", "fontFamily": "Arial", "padding": 4}, "flowchart": {"defaultRenderer": "elk"}} }%%
+%%{init: {"themeVariables": {"fontSize": "10px", "fontFamily": "Arial", "padding": 2}, "flowchart": {"defaultRenderer": "elk"}} }%%
 flowchart TD
-    classDef compactStyle font-size:10px,padding:4px;
-    A["Start"]:::compactStyle --> B["Run src/draft_mask.py (optional)"]:::compactStyle
-    B --> C{"Refine mask for ground truth (manual)"}:::compactStyle
-    C --> D["Run src/create_ocr_dataset.py"]:::compactStyle
-    D --> E{"Edit metadata.csv with text labels (manual)"}:::compactStyle
-    E --> F["Run src/train_segmentation.py"]:::compactStyle
-    E --> G["Run src/train_ocr.py"]:::compactStyle
+    A@{ shape: rect, label: "Start" } --> 
+    B@{ shape: rect, label: "Run src/draft_mask.py (optional)" } -->
+    C@{ shape: rect, label: "Refine mask for ground truth (manual)" } -->
+    D@{ shape: rect, label: "Run src/create_ocr_dataset.py" } -->
+    E@{ shape: rect, label: "Edit metadata.csv with text labels (manual)" }
+    E --> F@{ shape: rect, label: "Run src/train_segmentation.py" }
+    E --> G@{ shape: rect, label: "Run src/train_ocr.py" }
     subgraph Training
-        F --> H((Segmentation Model)):::compactStyle
-        G --> I((OCR Model)):::compactStyle
+        F --> H@{ shape: rect, label: "Segmentation Model" }
+        G --> I@{ shape: rect, label: "OCR Model" }
     end
-    H & I --> J["Run src/process_map.py"]:::compactStyle
-    J --> K["Run src/verify_output.py"]:::compactStyle
-    K --> L["View final outputs"]:::compactStyle
+    H & I --> J@{ shape: rect, label: "Run src/process_map.py" }
+    J --> K@{ shape: rect, label: "Run src/verify_output.py" }
+    K --> L@{ shape: rect, label: "View final outputs" }
 ```
 
 ### Detailed Steps
