@@ -103,8 +103,8 @@ All executable scripts are located in the `src/` directory.
 ### Future Work
 
 * **Expand the Dataset**: The most impactful improvement would be to acquire and annotate more maps. Training on a larger and more diverse dataset is the only way to significantly improve the generalization and accuracy of both the segmentation and OCR models.
-* **Hyperparameter Tuning**: Conduct a systematic search for optimal training settings (e.g., learning rate, class weights) using a tool like Optuna to maximize model performance.
+* **Hyperparameter Tuning**: Conduct a systematic search for optimal training settings (e.g learning rate, class weights) to maximize model performance.
 * **Automated Georeferencing**: Implement a feature to automatically detect grid lines and corner coordinates from the map image itself, allowing the system to process any map sheet without hardcoded values.
-* **Quantitative Evaluation**: Establish a dedicated test set of annotated maps and implement a formal evaluation pipeline that calculates key metrics (e.g., Intersection over Union for segmentation, Character Error Rate for OCR) to objectively benchmark model performance.
-* **Deployment**: Wrap the final inference pipeline in a web API (using a framework like FastAPI or Flask) to create a user-friendly service for digitizing new maps.
+* **Quantitative Evaluation**: Establish a dedicated test set of annotated maps and implement a formal evaluation pipeline that calculates key metrics (e.g Intersection Over Union for segmentation, Character Error Rate for OCR) to objectively benchmark model performance.
+
     

@@ -222,6 +222,9 @@ __pycache__/
 /outputs/models/trocr-tuned-ocr/model.safetensors
 /outputs/models/trocr-tuned-ocr/checkpoint-320
 
+pyproject.toml
+poetry.lock
+
 # OS / Editor specific
 .DS_Store
 .vscode/

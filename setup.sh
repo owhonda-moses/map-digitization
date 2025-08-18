@@ -47,22 +47,6 @@ apt-get install -y --no-install-recommends \
 echo "System dependencies installed."
 
 
-# echo "Setting up Python with Poetry"
-# curl -sSL https://install.python-poetry.org | python3.11 -
-# export PATH="/root/.local/bin:$PATH"
-# echo "Poetry installed."
-
-# echo "Setting up environment and packages"
-# poetry env use python3.11
-# poetry lock
-# poetry install --no-interaction --no-ansi >/dev/null 2>&1
-
-# echo "Installing PyTorch"
-# poetry run pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
-# echo "PyTorch installed."
-# poetry run python -c "import torch; print(f'Python env ready: {torch.__version__}, CUDA: {torch.cuda.is_available()}')"
-
-
 CONDA_INSTALL_PATH="$HOME/miniconda"
 CONDA_ENV_NAME="map-cv"
 

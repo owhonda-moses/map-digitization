@@ -52,7 +52,7 @@ def main():
     full_preds_logits = np.zeros((h, w, NUM_CLASSES), dtype=np.float32)
     count_map = np.zeros((h, w), dtype=np.float32)
     for y in tqdm(range(0, h, STRIDE)):
-        for x in range(0, w, STRIDE)):
+        for x in range(0, w, STRIDE):
             y_end, x_end = min(y + PATCH_SIZE, h), min(x + PATCH_SIZE, w)
             patch = image_rgb[y:y_end, x:x_end]
             h_patch, w_patch, _ = patch.shape

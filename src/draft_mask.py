@@ -24,7 +24,7 @@ red_hsv = cv2.bitwise_or(m1, m2) > 0
 # l*a*b* mask
 lab = color.rgb2lab(image_rgb / 255.0)
 a_channel = lab[..., 1]
-a_thr = np.percentile(a_channel, 99.2)
+a_thr = np.percentile(a_channel, 99.3)
 red_lab = (a_channel > a_thr)
 
 # combine and clean
