@@ -58,9 +58,9 @@ flowchart TD
 
 ### Detailed Steps
 
-1.  **Run `src/draft_mask.py` (Optional)**: This creates `draft_mask.png` in `data/input/` to serve as a starting point for your manual masks.
+1.  **Run `src/draft_mask.py`**: This optional step creates `draft_mask.png` in `data/input/` to serve as a starting point for your manual masks.
 
-2.  **Refine Draft (Manual)**: This step requires a layer-based image editor like **GIMP** (free) or **Photoshop**.
+2.  **Refine Draft**: This step requires a layer-based image editor like **GIMP** or **Photoshop**.
     * Open the original `stockton_1.png`.
     * Import the `draft_mask.png` as a new layer.
     * Manually correct the draft by painting with pure white for features and pure black for background.
@@ -68,14 +68,13 @@ flowchart TD
 
 3.  **Run `src/create_ocr_dataset.py`**: This script uses your `text_mask.png` to generate image snippets and saves them in `data/ocr_data/images/`.
 
-4.  **Populate `metadata.csv` (Manual)**: Create a text file at `data/ocr_data/metadata.csv`. It must contain two columns, `file_name` and `text`, with the correct label for each image snippet generated in the previous step.
+4.  **Populate `metadata.csv`**: Create a text file at `data/ocr_data/metadata.csv`. It must contain two columns, `file_name` and `text`, with the correct label for each image snippet generated in the previous step.
 
     **Example `metadata.csv` format:**
     ```csv
     file_name,text
     images/image_0.png,"W/1098"
     images/image_1.png,"96/0999"
-    images/image_2.png,"SK/5581P"
     ```
 5.  **Train Models**: Run `src/train_segmentation.py` and `src/train_ocr.py`.
 6.  **Run Inference**: Run `src/process_map.py` to generate the final `GeoPackage`.
@@ -93,6 +92,16 @@ All executable scripts are located in the `src/` directory.
 * `process_map.py`: The main inference script that runs the full pipeline on a source image to generate the final GeoPackage.
 * `verify_output.py`: A utility to programmatically verify the final geospatial output by creating an annotated image.
   
+### Manual Annotation (Ground Truth)
+
+The manual steps in this project, (*creating the image masks and the `metadata.csv` file*) are necessary to produce ground truth data because we implement supervised learning which relies on this ground truth to train the models.
+
+* **Segmentation Masks**: The black-and-white masks created with GIMP act as a perfect, pixel-level *answer key* for the U-Net model. By comparing its predictions to this ground truth, the model learns the visual features of what constitutes a _boundary_ or _text_.
+
+* **Metadata CSV**: This file is the _answer key_ for the TrOCR model. It provides the exact, correct text for each cropped text image, allowing the model to learn the association between image pixels with specific characters.
+
+Relying on high-quality ground truth is critical in this project, as the entire training process is derived from a **single source image**, and due to the limited data, the manually created masks and text labels represent the complete and authoritative definition of the features to be learned. Any inaccuracies in this single ground truth will be directly learned and repeated by the models.
+
 
 ### Limitations
 
@@ -106,5 +115,3 @@ All executable scripts are located in the `src/` directory.
 * **Hyperparameter Tuning**: Conduct a systematic search for optimal training settings (e.g learning rate, class weights) to maximize model performance.
 * **Automated Georeferencing**: Implement a feature to automatically detect grid lines and corner coordinates from the map image itself, allowing the system to process any map sheet without hardcoded values.
 * **Quantitative Evaluation**: Establish a dedicated test set of annotated maps and implement a formal evaluation pipeline that calculates key metrics (e.g Intersection Over Union for segmentation, Character Error Rate for OCR) to objectively benchmark model performance.
-
-    
