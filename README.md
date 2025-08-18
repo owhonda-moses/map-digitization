@@ -101,7 +101,7 @@ The manual steps in this project, (*creating the image masks and the `metadata.c
 * **Metadata CSV**: This file is the _answer key_ for the TrOCR model. It provides the exact, correct text for each cropped text image, allowing the model to learn the association between image pixels with specific characters.
 
     ```bash
-    Relying on high-quality ground truth is critical in this project, as the entire training process is derived from a single source image, and due to the limited data the manually created masks and text labels represent the complete and authoritative definition of the features to be learned. Any inaccuracies in this single ground truth will be directly learned and repeated by the models.
+    Relying on high-quality ground truth is critical as the entire training process is derived from a single source image, and due to the limited data the manually created masks and text labels represent the complete and authoritative definition of the features to be learned. Any inaccuracies in this single ground truth will be directly learned and repeated by the models.
     ```
 
 
