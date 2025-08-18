@@ -14,8 +14,8 @@ fi
 
 # git config
 echo "Configuring git"
-git config --global user.name  "owhonda-moses"
-git config --global user.email "owhondamoses7@gmail.com"
+git config --global user.name  "         " # set your git identity
+git config --global user.email "         "
 git config --global init.defaultBranch main
 
 # ~/.netrc for https auth
